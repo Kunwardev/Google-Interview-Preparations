@@ -40,5 +40,6 @@ public class List
     public void setData(int data){
         this.data = data;
     }
+
     
 }

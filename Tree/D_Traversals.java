@@ -35,10 +35,10 @@ public class D_Traversals
                 if(tmp.right != null)
                     q.offer(tmp.right);
             }else{
-                al.add(b);
-                b = new ArrayList<>();
                 if(!q.isEmpty())
                     q.offer(null);
+                al.add(b);
+                b = new ArrayList<>();
             }
             
         }
