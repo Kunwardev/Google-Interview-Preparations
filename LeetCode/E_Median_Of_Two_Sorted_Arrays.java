@@ -12,53 +12,43 @@ package LeetCode;
  */
 public class E_Median_Of_Two_Sorted_Arrays
 {
-    private double findMedianSortedArray(int[] A, int[] B){
-        int m = A.length;
-        int n = B.length;
-        
-        if((m+n)%2 != 0)
-            return (double)findKth(A, B, (m+n)/2, 0, m-1, 0, n-1);
-        else
-            return ((double)findKth(A, B, (m+n)/2, 0, m-1, 0, n-1)+
-                    (double)findKth(A, B, (m+n)/2-1, 0, m-1, 0, n-1))*0.5;
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+    int total = nums1.length+nums2.length;
+    if(total%2==0){
+        return (findKth(total/2+1, nums1, nums2, 0, 0)+findKth(total/2, nums1, nums2, 0, 0))/2.0;
+    }else{
+        return findKth(total/2+1, nums1, nums2, 0, 0);
     }
-    
-    private int findKth(int[] A, int[] B, int k, int astart, int aend, int bstart, int bend){
-        
-        int alen = aend - astart + 1;
-        int blen = bend - bstart + 1;
-        
-        if(alen == 0)
-            return B[bstart+k];
-        if(blen == 0)
-            return A[astart+k];
-        if(k == 0){
-            return A[astart] < B[bstart] ? A[astart] : B[bstart];
-        }
-        int aMid = (alen + k)/(alen+blen);
-        int bMid = k - aMid - 1;
-        
-        aMid = aMid + astart;
-        bMid = bMid + bstart;
-        
-        if(A[aMid] > B[bMid]){
-            k = k - (bMid - bstart + 1);
-            aend = aMid;
-            bstart = bMid + 1;
-        }else{
-            k = k - (aMid - astart + 1);
-            bend = bMid;
-            astart = aMid + 1;
-        }
-        return findKth(A, B, k, astart, aend, bstart, bend);
+}
+ 
+public int findKth(int k, int[] nums1, int[] nums2, int s1, int s2){
+    if(s1>=nums1.length)
+        return nums2[s2+k-1];
+ 
+    if(s2>=nums2.length)
+        return nums1[s1+k-1];
+ 
+    if(k==1)
+        return Math.min(nums1[s1], nums2[s2]);
+ 
+    int m1 = s1+k/2-1;
+    int m2 = s2+k/2-1;
+ 
+    int mid1 = m1<nums1.length?nums1[m1]:Integer.MAX_VALUE;    
+    int mid2 = m2<nums2.length?nums2[m2]:Integer.MAX_VALUE;
+ 
+    if(mid1<mid2){
+        return findKth(k-k/2, nums1, nums2, m1+1, s2);
+    }else{
+        return findKth(k-k/2, nums1, nums2, s1, m2+1);
     }
-    
+}
     public static void main(String[] args)
     {
-        int[] A = new int[]{1,2,5,6};
-        int[] B = new int[]{3,4,8};
+        int[] A = new int[]{1,2};
+        int[] B = new int[]{3,4};
         E_Median_Of_Two_Sorted_Arrays e = new E_Median_Of_Two_Sorted_Arrays();
-        System.out.println(e.findMedianSortedArray(A, B));
+        System.out.println(e.findMedianSortedArrays(A, B));
     }
     
 }
